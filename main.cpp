@@ -11,7 +11,6 @@ enum CELL {
 };
 int grid[ROWS][COLS] = {};
 
-
 void showGrid();
 
 int main() {
@@ -20,39 +19,37 @@ int main() {
 
     showGrid();
 
-bool isOver = false;
+    bool isOver = false;
 
     do {
         int input;
 
         cout << "Enter a number between 1 and " << COLS << " : ";
         cin >> input;
-        if( !(input > 0 and input < COLS) or cin.fail()){
+        cout << " " << endl;
+
+        if (!(input > 0 and input < COLS) or cin.fail()) {
             cin.clear();
-            cout << "Entree invalide "<< endl;
+            cin.ignore(INT_MAX, '\n');
+            //cout << " " << endl;
+            cerr << "Entree invalide " << endl;
             continue;
 
         }
-
-
-
-
-
     } while (!isOver);
-
-
 
 
     return 0;
 }
-string getPlayerName(CELL cell){
+
+string getPlayerName(CELL cell) {
     switch (cell) {
         case 0:
             return "0";
         case 1:
             return "PLAYER1";
-            case 2:
-                return "PLAYER2";
+        case 2:
+            return "PLAYER2";
     }
 }
 
