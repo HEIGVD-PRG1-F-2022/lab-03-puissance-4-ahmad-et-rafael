@@ -3,6 +3,10 @@
 #include <limits>
 #include "display.h"
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 const int ROWS = 6;
 const int COLS = 7;
 
@@ -21,13 +25,15 @@ int getLastIndex(GRID grid, int indexCol);
 char getPlayerChar(CELL cell);
 string getPlayerName(CELL cell);
 
+void setConsoleWindow();
+
 int main()
 {
     bool isOver = false;
     GRID grid = {};
 
     CELL turn = CELL::PLAYER1;
-
+    setConsoleWindow();
     do {
         showGrid(grid);
 
@@ -154,4 +160,7 @@ int getLastIndex(GRID grid, int indexCol)
     }
 
     return ROWS;
+}
+void setConsoleWindow(){
+    system(("chcp "s + std::to_string(CP_UTF8)).c_str());
 }
