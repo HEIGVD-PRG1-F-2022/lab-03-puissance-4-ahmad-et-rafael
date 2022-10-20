@@ -1,52 +1,56 @@
 #include <iostream>
 #include <iomanip>
-#include <windows.h>
-
-
-using namespace std;
+#include <limits>
+#include "display.h"
 
 const int ROWS = 6;
 const int COLS = 7;
-HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 enum CELL {
-    BLANK, PLAYER1, PLAYER2
+    BLANK,
+    PLAYER1,
+    PLAYER2
 };
-int grid[ROWS][COLS] = {};
-CELL turn = CELL::PLAYER1;
 
-void showGrid();
-int getLastIndex(int grid[ROWS][COLS], int indexCol);
-string getPlayerName(CELL cell);
+typedef CELL GRID[ROWS][COLS];
+
+using namespace std;
+
+void showGrid(GRID grid);
+int getLastIndex(GRID grid, int indexCol);
+char getPlayerName(CELL cell);
 
 
-int main() {
-
-    //grid[0][0] = CELL::PLAYER1;
-    //grid[6][5] = CELL::PLAYER2;
-    //grid[1][3] = CELL::PLAYER2;
-
+int main()
+{
     bool isOver = false;
+    GRID grid = {};
+
+    CELL turn = CELL::PLAYER1;
 
     do {
+        showGrid(grid);
 
-        showGrid();
+        setTextColor(RESET);
 
         cout << "Player turn : " << getPlayerName(turn) << endl;
+
+        setTextColor(RESET);
+
         int input;
-        SetConsoleTextAttribute(hConsole, 7);
-        cout << "Enter a number between 1 and " << COLS << " : ";
+
+        cout << "Choose a column to play on: (1-" << COLS << ") : ";
         cin >> input;
 
         if (!(input > 0 and input <= COLS) or cin.fail()) {
             cin.clear();
-            cin.ignore(INT_MAX, '\n');
-            //cout << " " << endl;
-            cerr << endl << "Entree invalide ";
+            cin.ignore(numeric_limits<int>::max(), '\n');
+
+            cerr << endl << "Invalid input. Try again." << endl;
             continue;
         }
 
-       int lastIndex = getLastIndex(grid,input - 1);
+       int lastIndex = getLastIndex(grid, input - 1);
 
         grid[input - 1][lastIndex - 1] = turn;
 
@@ -55,47 +59,44 @@ int main() {
     } while (!isOver);
 
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
-string getPlayerName(CELL cell) {
-
-
+char getPlayerName(CELL cell)
+{
     switch (cell) {
-        case 0:
-            SetConsoleTextAttribute(hConsole, 7);
-            return "0";
-
-        case 1:
-
-            SetConsoleTextAttribute(hConsole, 14);
-            return "PLAYER1";
-
-        case 2:
-            SetConsoleTextAttribute(hConsole, 10);
-            return "PLAYER2";
-
+        case CELL::BLANK:
+            setTextColor(WHITE);
+            return '0';
+        case CELL::PLAYER1:
+            setTextColor(YELLOW);
+            return '0';
+        case CELL::PLAYER2:
+            setTextColor(GREEN);
+            return '0';
     }
-
 }
 
-void showGrid() {
-
-    for (int y = 0; y < ROWS; ++y) {
-        for (int x = 0; x < COLS; ++x) {
-
-            cout << setw(7) << getPlayerName(CELL(grid[x][y])) << " ";
+void showGrid(GRID grid)
+{
+    for (int y = 0; y < ROWS; ++y)
+    {
+        for (int x = 0; x < COLS; ++x)
+        {
+            cout << getPlayerName(grid[x][y]) << " ";
         }
         cout << endl;
     }
 }
 
-int getLastIndex(int grid[ROWS][COLS], int indexCol){
-
-    for(int x=0; x < ROWS; ++x ){
-
+int getLastIndex(GRID grid, int indexCol)
+{
+    for(int x = 0; x < ROWS; ++x )
+    {
         if(grid[indexCol][x] != CELL::BLANK)
+        {
             return x;
+        }
     }
 
     return ROWS;
