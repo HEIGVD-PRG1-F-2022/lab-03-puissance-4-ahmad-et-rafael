@@ -12,9 +12,9 @@
 #define LIGHT_BLUE2 "\x1b[38;5;21m "
 #define LIGHT_BLUE3 "\x1b[38;5;27m "
 #define LIGHT_YELLOW "\x1b[38;5;230m "
-#define YELLOW "\x1b[38;5;226m"
+#define YELLOW "\x1b[38;2;255;255m"
 #define BLACK "\x1b[38;5;0m"
-#define GREEN "\x1b[38;5;40m"
+#define GREEN "\x1b[38;2;0;255;0m"
 #define WHITE "\x1b[38;5;255m"
 #define RESET "\x1b[0;0m"
 
