@@ -42,6 +42,7 @@ int main()
         cout << "Choose a column to play on: (1-" << COLS << ") : ";
         cin >> input;
 
+        // Prompt user for input and handle any possible invalid input.
         if (!(input > 0 and input <= COLS) or cin.fail()) {
             cin.clear();
             cin.ignore(numeric_limits<int>::max(), '\n');
@@ -50,14 +51,21 @@ int main()
             continue;
         }
 
-       int lastIndex = getLastIndex(grid, input - 1);
+        // Get the last available position to play on and check if it is not full.
+        int lastIndex = getLastIndex(grid, input - 1);
+        if (lastIndex < 1)
+        {
+            cerr << "This column is full. Choose a different one." << endl;
+            continue;
+        }
 
+        // Update the grid with the newly-played position.
         grid[input - 1][lastIndex - 1] = turn;
 
+        // Update next player's turn.
         turn = turn == CELL::PLAYER1 ? CELL::PLAYER2 : CELL::PLAYER1;
 
     } while (!isOver);
-
 
     return EXIT_SUCCESS;
 }
