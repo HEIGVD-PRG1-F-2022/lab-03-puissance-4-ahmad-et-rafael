@@ -25,15 +25,15 @@ int getLastIndex(GRID grid, int indexCol);
 char getPlayerChar(CELL cell);
 string getPlayerName(CELL cell);
 
-void setConsoleWindow();
-
 int main()
 {
+    setConsoleWindow();
+
+
     bool isOver = false;
     GRID grid = {};
 
     CELL turn = CELL::PLAYER1;
-    setConsoleWindow();
     do {
         showGrid(grid);
 
@@ -57,8 +57,11 @@ int main()
             continue;
         }
 
+        // Arrays start with 0;
+        input--;
+
         // Get the last available position to play on and check if the column is not full.
-        int lastIndex = getLastIndex(grid, input - 1);
+        int lastIndex = getLastIndex(grid, input);
         if (lastIndex < 1)
         {
             cerr << "This column is full. Choose a different one." << endl;
@@ -66,7 +69,7 @@ int main()
         }
 
         // Update the grid with the newly-played position.
-        grid[input - 1][lastIndex - 1] = turn;
+        grid[lastIndex - 1][input] = turn;
 
         // Update next player's turn.
         turn = turn == CELL::PLAYER1 ? CELL::PLAYER2 : CELL::PLAYER1;
@@ -129,7 +132,7 @@ void showGrid(GRID grid)
 
         for (int x = 0; x < COLS; ++x)
         {
-            cout << "| " << getPlayerChar(grid[x][y]) << " ";
+            cout << "| " << getPlayerChar(grid[y][x]) << " ";
             if (x == COLS - 1)
             {
                 cout << "|";
@@ -153,14 +156,11 @@ int getLastIndex(GRID grid, int indexCol)
 {
     for(int x = 0; x < ROWS; ++x )
     {
-        if(grid[indexCol][x] != CELL::BLANK)
+        if(grid[x][indexCol] != CELL::BLANK)
         {
             return x;
         }
     }
 
     return ROWS;
-}
-void setConsoleWindow(){
-    system(("chcp "s + std::to_string(CP_UTF8)).c_str());
 }
