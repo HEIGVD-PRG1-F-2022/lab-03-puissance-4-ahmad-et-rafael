@@ -18,8 +18,8 @@ using namespace std;
 
 void showGrid(GRID grid);
 int getLastIndex(GRID grid, int indexCol);
-char getPlayerName(CELL cell);
-
+char getPlayerChar(CELL cell);
+string getPlayerName(CELL cell);
 
 int main()
 {
@@ -33,7 +33,7 @@ int main()
 
         setTextColor(RESET);
 
-        cout << "Player turn : " << getPlayerName(turn) << endl;
+        cout << "Current turn : " << getPlayerName(turn) << endl;
 
         setTextColor(RESET);
 
@@ -51,7 +51,7 @@ int main()
             continue;
         }
 
-        // Get the last available position to play on and check if it is not full.
+        // Get the last available position to play on and check if the column is not full.
         int lastIndex = getLastIndex(grid, input - 1);
         if (lastIndex < 1)
         {
@@ -70,11 +70,11 @@ int main()
     return EXIT_SUCCESS;
 }
 
-char getPlayerName(CELL cell)
+char getPlayerChar(CELL cell)
 {
     switch (cell) {
         case CELL::BLANK:
-            setTextColor(WHITE);
+            setTextColor(RESET);
             return '0';
         case CELL::PLAYER1:
             setTextColor(YELLOW);
@@ -85,16 +85,62 @@ char getPlayerName(CELL cell)
     }
 }
 
+string getPlayerName(CELL cell)
+{
+    switch (cell) {
+        case CELL::PLAYER1:
+            return "Player 1";
+        case CELL::PLAYER2:
+            return "Player 2";
+    }
+}
+
 void showGrid(GRID grid)
 {
+    // Print column numbers.
+    setTextColor(LIGHT_YELLOW);
+
+    for (int i = 0; i < COLS; ++i) {
+        cout << " " << i + 1 << "  ";
+    }
+
+    // Print the entire grid.
+    setTextColor(RESET);
+
+    cout << endl;
+
     for (int y = 0; y < ROWS; ++y)
     {
+        for (int i = 0; i < COLS; ++i) {
+            cout << "+---";
+            if (i == COLS - 1)
+            {
+                cout << "+";
+            }
+        }
+
+        cout << endl;
+
         for (int x = 0; x < COLS; ++x)
         {
-            cout << getPlayerName(grid[x][y]) << " ";
+            cout << "| " << getPlayerChar(grid[x][y]) << " ";
+            if (x == COLS - 1)
+            {
+                cout << "|";
+            }
         }
         cout << endl;
     }
+
+    for (int i = 0; i < COLS; ++i) {
+        cout << "+---";
+        if (i == COLS - 1)
+        {
+            cout << "+";
+        }
+    }
+
+    cout << endl;
 }
 
 int getLastIndex(GRID grid, int indexCol)
