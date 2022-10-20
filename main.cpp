@@ -31,17 +31,11 @@ int main()
 
     bool isOver = false;
     GRID grid = {};
-    grid[5][5] = PLAYER2;
-    grid[4][4] = PLAYER2;
-    grid[2][2] = PLAYER2;
-    grid[3][3] = PLAYER2;
-
-    showGrid(grid);
-
-    cout << hasWon(grid, CELL::PLAYER2);
-
-    return 0;
-
+//    grid[5][5] = PLAYER2;
+//    grid[4][4] = PLAYER2;
+//    grid[2][2] = PLAYER2;
+//    grid[3][3] = PLAYER2;
+    int test = 0;
     CELL turn = CELL::PLAYER1;
     do {
         showGrid(grid);
@@ -80,6 +74,16 @@ int main()
         // Update the grid with the newly-played position.
         grid[lastIndex - 1][input] = turn;
 
+        // Check winner.
+        bool bruh = hasWon(grid, PLAYER1);
+        bool bruh2 = hasWon(grid, PLAYER2);
+        if (bruh or bruh2)
+        {
+            cout << getPlayerName(turn) << " has won!";
+            isOver = true;
+            break;
+        }
+        test++;
         // Update next player's turn.
         turn = turn == CELL::PLAYER1 ? CELL::PLAYER2 : CELL::PLAYER1;
 
@@ -167,7 +171,7 @@ int count(GRID grid, int row, int col, int dx, int dy)
 
     int x = col, y = row;
 
-    while (x < COLS and y < ROWS and grid[y][x] == grid[row][col]){
+    while (x < COLS and y < ROWS and grid[y][x] != BLANK and grid[y][x] == grid[row][col]){
         count++;
         x += dx;
         y += dy;
@@ -176,18 +180,16 @@ int count(GRID grid, int row, int col, int dx, int dy)
     return count;
 }
 
-bool hasWon(GRID grid, CELL color){
+bool hasWon(GRID grid, CELL player){
     for (int y = 0; y < ROWS; ++y) {
         for (int x = 0; x < COLS; ++x) {
             CELL cell = grid[x][y];
 
-            if (cell == color){
-                if(count(grid,y,x,-1,1) >= 4 or
-                count(grid,y,x,0,1) >= 4 or
-                count(grid,y,x,1,1) >= 4 or
-                count(grid,y,x,-1,-1) >= 4){
-                        return true;
-                }
+            if (cell == player){
+                return count(grid,y,x,-1,1) >= 4 or
+                    count(grid,y,x,0,1) >= 4 or
+                    count(grid,y,x,1,1) >= 4 or
+                    count(grid,y,x,-1,-1) >= 4;
             }
         }
     }
