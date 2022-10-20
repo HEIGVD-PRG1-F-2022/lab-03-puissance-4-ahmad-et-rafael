@@ -21,14 +21,26 @@ void showGrid(GRID grid);
 int getLastIndex(GRID grid, int indexCol);
 char getPlayerChar(CELL cell);
 string getPlayerName(CELL cell);
+CELL getWinner(GRID grid, CELL color);
 
 int main()
 {
+
     setConsoleWindow();
 
 
     bool isOver = false;
     GRID grid = {};
+    grid[0][0] = PLAYER1;
+    grid[0][1] = PLAYER1;
+    grid[0][2] = PLAYER1;
+    grid[0][3] = PLAYER1;
+
+    showGrid(grid);
+
+    cout << getWinner(grid, CELL::PLAYER1);
+
+    return 0;
 
     CELL turn = CELL::PLAYER1;
     do {
@@ -147,6 +159,33 @@ void showGrid(GRID grid)
     }
 
     cout << endl;
+}
+
+int count(GRID grid, int row, int col, int dx, int dy)
+{
+    int count = 0;
+
+    int x = col, y = row;
+
+    while (x < COLS and y < ROWS and grid[y][x] == grid[row][col]){
+        count++;
+        x += dx;
+        y += dy;
+    }
+
+    return count;
+}
+
+CELL getWinner(GRID grid, CELL color){
+    for (int y = 0; y < ROWS; ++y) {
+        for (int x = 0; x < COLS; ++x) {
+            CELL cell = grid[x][y];
+
+            if (cell == color){
+
+            }
+        }
+    }
 }
 
 int getLastIndex(GRID grid, int indexCol)
