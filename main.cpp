@@ -3,9 +3,6 @@
 #include <limits>
 #include "display.h"
 
-#ifdef _WIN32
-#include <windows.h>
-#endif
 
 const int ROWS = 6;
 const int COLS = 7;
